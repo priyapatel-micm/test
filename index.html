@@ -1,0 +1,235 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>FORMA — Modern Store</title>
+  <link rel="stylesheet" href="style.css" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;1,400&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet" />
+</head>
+<body>
+
+  <!-- ===== NAVIGATION ===== -->
+  <nav class="navbar" id="navbar">
+    <div class="nav-logo"><a href="#home">FORMA</a></div>
+    <ul class="nav-links" id="navLinks">
+      <li><a href="#home" class="nav-link active" data-page="home">Home</a></li>
+      <li><a href="#products" class="nav-link" data-page="products">Shop</a></li>
+      <li><a href="#cart" class="nav-link" data-page="cart">Cart <span class="cart-count" id="cartCount">0</span></a></li>
+    </ul>
+    <button class="hamburger" id="hamburger" aria-label="Toggle menu">
+      <span></span><span></span><span></span>
+    </button>
+  </nav>
+
+  <!-- ===== HOME PAGE ===== -->
+  <section class="page active" id="home">
+
+    <!-- Hero -->
+    <div class="hero">
+      <div class="hero-text">
+        <span class="hero-eyebrow">New Collection 2025</span>
+        <h1 class="hero-title">Objects <em>made</em><br>to last.</h1>
+        <p class="hero-subtitle">Thoughtfully designed everyday essentials. Refined materials, enduring form.</p>
+        <button class="btn btn-primary" onclick="showPage('products')">Explore the Shop</button>
+      </div>
+      <div class="hero-visual">
+        <div class="hero-card">
+          <div class="hero-img-wrap">
+            <img src="https://images.unsplash.com/photo-1491553895911-0055eca6402d?w=600&q=80" alt="Featured product" />
+          </div>
+          <div class="hero-card-label">
+            <span>Bestseller</span>
+            <strong>Arch Runner Pro</strong>
+          </div>
+        </div>
+        <div class="hero-badge">Free shipping over ₹2,000</div>
+      </div>
+    </div>
+
+    <!-- Categories strip -->
+    <div class="categories">
+      <div class="category-chip" onclick="filterCategory('footwear')">👟 Footwear</div>
+      <div class="category-chip" onclick="filterCategory('accessories')">🎒 Accessories</div>
+      <div class="category-chip" onclick="filterCategory('apparel')">👕 Apparel</div>
+      <div class="category-chip" onclick="filterCategory('home')">🏠 Home</div>
+      <div class="category-chip" onclick="filterCategory('')">✦ All</div>
+    </div>
+
+    <!-- Featured Products -->
+    <div class="section-header">
+      <h2>Featured Products</h2>
+      <a href="#" class="see-all" onclick="showPage('products'); return false;">View all →</a>
+    </div>
+    <div class="products-grid" id="featuredGrid"></div>
+
+    <!-- Banner -->
+    <div class="promo-banner">
+      <div class="promo-text">
+        <h3>Members get 20% off every order.</h3>
+        <p>Join FORMA and unlock exclusive pricing, early access, and free returns.</p>
+        <button class="btn btn-outline">Join Free</button>
+      </div>
+    </div>
+
+  </section>
+
+  <!-- ===== PRODUCTS PAGE ===== -->
+  <section class="page" id="products">
+    <div class="page-header">
+      <h2>All Products</h2>
+      <div class="filters">
+        <select id="sortSelect" onchange="sortProducts()">
+          <option value="">Sort by</option>
+          <option value="price-asc">Price: Low to High</option>
+          <option value="price-desc">Price: High to Low</option>
+          <option value="name">Name</option>
+        </select>
+      </div>
+    </div>
+    <div class="products-grid" id="allProductsGrid"></div>
+  </section>
+
+  <!-- ===== PRODUCT DETAIL PAGE ===== -->
+  <section class="page" id="product-detail">
+    <button class="back-btn" onclick="goBack()">← Back</button>
+    <div class="product-detail-layout" id="productDetailContent"></div>
+  </section>
+
+  <!-- ===== CART PAGE ===== -->
+  <section class="page" id="cart">
+    <div class="page-header">
+      <h2>Your Cart</h2>
+    </div>
+    <div class="cart-layout">
+      <div class="cart-items" id="cartItemsList">
+        <p class="empty-cart">Your cart is empty. <a href="#" onclick="showPage('products'); return false;">Start shopping →</a></p>
+      </div>
+      <div class="cart-summary" id="cartSummary"></div>
+    </div>
+  </section>
+
+  <!-- ===== CHECKOUT PAGE ===== -->
+  <section class="page" id="checkout">
+    <button class="back-btn" onclick="showPage('cart')">← Back to Cart</button>
+    <div class="checkout-layout">
+      <div class="checkout-form-wrap">
+        <h2>Checkout</h2>
+        <form id="checkoutForm" novalidate>
+
+          <fieldset>
+            <legend>Contact Information</legend>
+            <div class="form-row">
+              <div class="form-group">
+                <label for="firstName">First Name</label>
+                <input type="text" id="firstName" placeholder="Arjun" required />
+                <span class="error-msg" id="firstNameErr"></span>
+              </div>
+              <div class="form-group">
+                <label for="lastName">Last Name</label>
+                <input type="text" id="lastName" placeholder="Sharma" required />
+                <span class="error-msg" id="lastNameErr"></span>
+              </div>
+            </div>
+            <div class="form-group">
+              <label for="email">Email</label>
+              <input type="email" id="email" placeholder="arjun@email.com" required />
+              <span class="error-msg" id="emailErr"></span>
+            </div>
+            <div class="form-group">
+              <label for="phone">Phone</label>
+              <input type="tel" id="phone" placeholder="+91 98765 43210" required />
+              <span class="error-msg" id="phoneErr"></span>
+            </div>
+          </fieldset>
+
+          <fieldset>
+            <legend>Shipping Address</legend>
+            <div class="form-group">
+              <label for="address">Street Address</label>
+              <input type="text" id="address" placeholder="123 MG Road" required />
+              <span class="error-msg" id="addressErr"></span>
+            </div>
+            <div class="form-row">
+              <div class="form-group">
+                <label for="city">City</label>
+                <input type="text" id="city" placeholder="Ahmedabad" required />
+                <span class="error-msg" id="cityErr"></span>
+              </div>
+              <div class="form-group">
+                <label for="pincode">PIN Code</label>
+                <input type="text" id="pincode" placeholder="380001" required />
+                <span class="error-msg" id="pincodeErr"></span>
+              </div>
+            </div>
+            <div class="form-group">
+              <label for="state">State</label>
+              <select id="state" required>
+                <option value="">Select state</option>
+                <option>Gujarat</option><option>Maharashtra</option>
+                <option>Delhi</option><option>Karnataka</option>
+                <option>Tamil Nadu</option><option>Rajasthan</option>
+                <option>Other</option>
+              </select>
+              <span class="error-msg" id="stateErr"></span>
+            </div>
+          </fieldset>
+
+          <fieldset>
+            <legend>Payment Details</legend>
+            <div class="form-group">
+              <label for="cardName">Name on Card</label>
+              <input type="text" id="cardName" placeholder="Arjun Sharma" required />
+              <span class="error-msg" id="cardNameErr"></span>
+            </div>
+            <div class="form-group">
+              <label for="cardNumber">Card Number</label>
+              <input type="text" id="cardNumber" placeholder="4242 4242 4242 4242" maxlength="19" required />
+              <span class="error-msg" id="cardNumberErr"></span>
+            </div>
+            <div class="form-row">
+              <div class="form-group">
+                <label for="expiry">Expiry</label>
+                <input type="text" id="expiry" placeholder="MM/YY" maxlength="5" required />
+                <span class="error-msg" id="expiryErr"></span>
+              </div>
+              <div class="form-group">
+                <label for="cvv">CVV</label>
+                <input type="text" id="cvv" placeholder="123" maxlength="3" required />
+                <span class="error-msg" id="cvvErr"></span>
+              </div>
+            </div>
+          </fieldset>
+
+          <button type="submit" class="btn btn-primary btn-full">Place Order</button>
+        </form>
+      </div>
+
+      <div class="checkout-summary" id="checkoutSummary"></div>
+    </div>
+  </section>
+
+  <!-- ===== ORDER SUCCESS ===== -->
+  <section class="page" id="success">
+    <div class="success-screen">
+      <div class="success-icon">✓</div>
+      <h2>Order Confirmed!</h2>
+      <p>Thank you for your purchase. You'll receive a confirmation email shortly.</p>
+      <button class="btn btn-primary" onclick="showPage('home')">Continue Shopping</button>
+    </div>
+  </section>
+
+  <!-- Toast notification -->
+  <div class="toast" id="toast"></div>
+
+  <footer class="footer">
+    <div class="footer-inner">
+      <span class="footer-logo">FORMA</span>
+      <span>© 2025 FORMA Store. All rights reserved.</span>
+    </div>
+  </footer>
+
+  <script src="script.js"></script>
+</body>
+</html>
